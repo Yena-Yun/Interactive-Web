@@ -10,7 +10,7 @@
 		body {
 			position: relative;
 			background-color: #000;
-			/* 좌표 숫자 기록된 부분에 마우스 들어가면 커서가 사라짐 */
+			/* 좌표 숫자 기록된 부분(body)에 커서 들어가면 커서가 사라짐 */
 			cursor: none;
 		}
 
@@ -23,48 +23,74 @@
 			width: 100px;
 			height: 100px;
 			background-color: red;
-			/* body에 position: relative 주고 여기에 top: 0, left: 0 주면 
-			/* 사각형이 마우스에 딱 붙어서 이동 */
+			/* body에 position: relative 주고 여기에 top: 0, left: 0 주면 사각형이 마우스에 딱 붙어서 이동 */
 			top: 0;
 			left: 0;
 		}
 	</style>
 	<script>
-		//onload: 화면이 모두 load된 후에 실행 (화면이 load 되자마자 실행)
-		window.onload = function () {
-			// DOM 선택 - tagname으로 선택 (+ 첫번째값)
-			let h1 = document.getElementsByTagName("h1")[0];
-			let cursor_item = document.getElementsByClassName("cursor_item")[0];
+		// 마우스의 x,y 값을 변수로 뺀다.
+		let x = 0;
+		let y = 0;
+		let cursor_item; //선언은 바깥에서 (값 할당은 함수 안에서)
 
-			// 마우스가 움직이면 || mousefunc 함수 실행되면서 이벤트 발생
+		let mx = 0; //'마우스 x'
+		let my = 0; //'마우스 y'
+		let speed = 0.04;
+
+		//onload: 화면이 모두 load된 후에 실행 (= 화면이 load 되자마자 실행)
+		window.onload = function () {
+			// DOM을 tag명(h1)으로 선택 (+ 첫번째값)
+			let h1 = document.getElementsByTagName("h1")[0];
+			// DOM을 class명(cursor_item)으로 선택 
+			cursor_item = document.getElementsByClassName("cursor_item")[0];
+
+			// 마우스가 움직이면, mousefunc 함수 실행되면서 이벤트 발생
+			// 형태: target.addEventListener(type, listener, useCapture);
+			// (useCapture - 옵션(선택사항)으로 분류되지만 항상 옵션은 아님. 가장 광범위한 브라우저 호환성을 위해 필요)
 			window.addEventListener('mousemove', mousefunc, false);
 
 			function mousefunc(e) {
-				// h1태그의 children으로 x 좌표값 기록
-				h1.innerHTML = "x: " + e.clientX + "  y: " + e.clientY;
-				// 마우스가 움직일 때 좌표값에 맞춰 사각형을 이동시킴 (transform: translate(x, y) 이용)
-				// 사각형에 다른 이미지를 넣어 사용 가능
-				cursor_item.style.transform = "translate(" + e.clientX + "px, " + e.clientY + "px)";
+				// 반복해서 쓰는 건 변수로 만들기
+				x = e.clientX;
+				y = e.clientY;
+
+				// h1태그의 children(하위텍스트)으로 x 좌표값 기록
+				h1.innerHTML = "x: " + x + "  y: " + y;
 
 				// 콘솔에 x,y 좌표 찍기
-				console.log(e.clientX, e.clientY);
+				// console.log(e.clientX, e.clientY);
 			}
 
-			//loop 함수 계속 실행
+			//onload 함수 내에서 loop 함수 실행 (loop 안의 requestAnimationFrame 함수 때문에 계속 실행됨)
 			loop();
 		}
 
-
-		// i를 loop 바깥쪽에 선언하고
-		let i = 0;
+		// i를 loop 바깥쪽에 선언하고 loop 함수 안에서 사용
+		// let i = 0;
 
 		function loop() {
 			// 콘솔에 숫자 1이 계속 찍힘 (onload 함수 안이어서 마우스를 움직이지 않아도 계속 찍힘)
 			// console.log(1);
-			// i = i + 1을 콘솔에 찍으면 화면이 load 되자마자 1,2,3,4,...식으로 frame 단위로 계속 찍힘
-			console.log(i += 1);
 
-			// requestAnimationFrame: 웹서비스에는 잘 안 쓰지만 모션을 줄 때는 많이 쓰는 함수
+			// i = i + 1을 콘솔에 찍으면 화면이 load 되자마자 1,2,3,4,...가 frame 단위로 계속 찍힘
+			// console.log(i += 1);
+
+			// mousefunc 함수 내에서 변경된 x, y 값이 찍힘
+			console.log(x, y);
+
+			// mx, my = x, y 좌표값보다 0.03배 느리게 (= 부드럽게 이동)
+			// 0.09로 하면 더 빠름 (1에 가까울수록 움직임이 더 딱딱)
+			mx += (x - mx) * speed;
+			my += (y - my) * speed;
+
+			// 마우스가 움직일 때 좌표값에 맞춰 사각형을 이동시킴 (transform: translate(x, y) 이용)
+			// 사각형에 다른 이미지(png)를 넣어 사용 가능
+			// translate에 mx, my 반영하는 순간 사각형의 이동이 부드러워짐
+			cursor_item.style.transform = "translate(" + mx + "px, " + my + "px)";
+
+			// requestAnimationFrame(함수): 웹서비스에는 잘 안 쓰지만 모션을 줄 때는 많이 쓰는 함수
+			// loop 함수를 frame 단위로 반복해서 실행
 			window.requestAnimationFrame(loop);
 		}
 	</script>
