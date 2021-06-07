@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		body {
+			background-color: #000;
+		}
+
+		h1 {
+			color: #fff;
+		}
+
+		.cursor_item {
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			background-color: red;
+		}
+	</style>
+	<script>
+		//onload: 화면이 모두 load된 후에 실행
+		window.onload = function () {
+			// DOM 선택 - tagname으로 선택 (+ 첫번째값)
+			let h1 = document.getElementsByTagName("h1")[0];
+			let cursor_item = document.getElementsByClassName("cursor_item")[0];
+
+			// 마우스가 움직이면 || mousefunc 함수 실행되면서 이벤트 발생
+			window.addEventListener('mousemove', mousefunc, false);
+
+			function mousefunc(e) {
+				// h1태그의 children으로 x 좌표값 기록
+				h1.innerHTML = "x: " + e.clientX + "  y: " + e.clientY;
+				cursor_item.style.transform = "translate(" + e.clientX + "px, " + e.clientY + "px)";
+
+				// 콘솔에 x,y 좌표 찍힘
+				console.log(e.clientX, e.clientY);
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<h1>test</h1>
+	<div class="cursor_item"></div>
+</body>
+
+</html>
