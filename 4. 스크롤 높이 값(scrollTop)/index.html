@@ -15,19 +15,57 @@
 		h1 {
 			color: #fff;
 		}
+
+		.progress {
+			position: fixed;
+			width: 100%;
+			height: 5px;
+			top: 0;
+			left: 0;
+			background: #000;
+		}
+
+		.bar {
+			position: absolute;
+			width: 50%;
+			height: 5px;
+			top: 0;
+			left: 0;
+			background: yellow;
+			z-index: 10;
+
+		}
 	</style>
 	<script>
 		let scrollTop = 0;
+		let bar;
+
+		window.onload = function () {
+			// 페이지 로드 시 bar를 찾아낸다.
+			bar = document.getElementsByClassName("bar")[0];
+		}
 
 		window.addEventListener("scroll", function () {
 			scrollTop = document.documentElement.scrollTop;
-			console.log("스크롤값:", scrollTop);
+			//console.log("스크롤값:", scrollTop);
+
+			//화면 width 길이의 스크롤 바 구현. 백분율 구하는 공식.
+			//가로 퍼센트값 = 현재 스크롤 탑 위치 / (문서 전체 길이 - 윈도우 창 높이 ) * 100;
+			//정확하게 0~100이 나오는 코드 (Math.round하면 콘솔에 스크롤높이 깔끔하게 찍힘 + innerHeight 사용)
+			//per = Math.round(scrollTop / (document.documentElement.scrollHeight - window.innerHeight) )* 100;
+			let percent = Math.round(scrollTop / (document.body.scrollHeight - window.innerHeight) * 100);
+			console.log(percent);
+
+			bar.style.width = percent + "%";
 		}, false);
 	</script>
 </head>
 
 <body>
 	<h1>스크롤</h1>
+	<div class="progress">
+		<span class="bar"></span>
+	</div>
 </body>
 
 </html>
