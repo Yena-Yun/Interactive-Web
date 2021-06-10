@@ -1,3 +1,3 @@
-# 자바스크립트 인터랙티브 웹
+# Javascript로 만드는 Interactive Web
 
 공부기간: 210607 -
