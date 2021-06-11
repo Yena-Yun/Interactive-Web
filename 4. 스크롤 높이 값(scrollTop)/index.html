@@ -8,7 +8,9 @@
 	<title>스크롤</title>
 	<style>
 		body {
-			/* height: 8000px; */
+			height: 10000px;
+			/* 구름이 조금 더 천천히 움직임 */
+			overflow-x: hidden;
 			background: linear-gradient(150deg, red, orange, yellow, green, indigo, purple, black);
 		}
 
@@ -48,9 +50,9 @@
 		}
 
 		section {
+			position: relative;
 			width: 50vw;
 			background-color: rgba(255, 255, 255, .9);
-			background: #fff;
 			margin: 30px auto;
 			padding: 20px;
 		}
@@ -58,14 +60,67 @@
 		p {
 			color: #555;
 		}
+
+		.cloudWrap {
+			position: absolute;
+		}
+
+		.cloudWrap img {
+			position: absolute;
+			width: 400px;
+			top: 0;
+			left: 0;
+		}
+
+		.cloudWrap img:nth-child(1) {
+			top: -100px;
+			left: 500px;
+		}
+
+		.cloudWrap img:nth-child(2) {
+			top: 800px;
+			left: 0;
+		}
+
+		.cloudWrap img:nth-child(3) {
+			top: 1800px;
+			left: 400px;
+		}
+
+		.cloudWrap img:nth-child(4) {
+			top: 3000px;
+			left: -100px;
+		}
+
+		.cloudWrap img:nth-child(5) {
+			top: 4200px;
+			left: 500px;
+		}
+
+		.cloudWrap img:nth-child(6) {
+			top: 5900px;
+			left: -140px;
+		}
+
+		.cloudWrap img:nth-child(7) {
+			top: 7000px;
+			left: 500px;
+		}
+
+		.cloudWrap img:nth-child(8) {
+			top: 8000px;
+			left: -190px;
+		}
 	</style>
 	<script>
 		let scrollTop = 0;
 		let bar;
+		let cloudWrap;
 
 		window.onload = function () {
 			// 페이지 로드 시 bar를 찾아낸다.
 			bar = document.getElementsByClassName("bar")[0];
+			cloudWrap = document.getElementsByClassName("cloudWrap")[0];
 		}
 
 		window.addEventListener("scroll", function () {
@@ -81,6 +136,7 @@
 
 			/* bar.style.width = percent + "%"; */
 			bar.style.height = percent + "%";
+			cloudWrap.style.transform = "translate(0," + scrollTop / 1.2 + "px)";
 		}, false);
 	</script>
 </head>
@@ -90,8 +146,15 @@
 	<div class="progress">
 		<span class="bar"></span>
 	</div>
-	<div>
-		<img src="./cloud.png" alt="">
+	<div class="cloudWrap">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
+		<img src="./image/cloud.png" alt="구름">
 	</div>
 	<section>
 		<h1>제목</h1>
